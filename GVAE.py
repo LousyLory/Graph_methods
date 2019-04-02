@@ -2,9 +2,9 @@
 # implementation using pytorch
 
 import torch
-from torch import nn#, optim
+from torch import nn, optim
 import networkx
-from GCN import GraphConvolution as GC
+from GCN import GraphConvolution
 
 class VGAE_linear(nn.Module):
 	'''
@@ -26,7 +26,7 @@ class VGAE_linear(nn.Module):
 	def reparameterize(self, mu, logvar):
 		std = torch.exp(0.5*logvar)
 		eps = torch.randn_like(std)
-		return eps.mul(std).add_(mu)
+		return mu+eps*std
 
 	def decode(self, z):
 		h3 = F.relu(self.fc3(z))
