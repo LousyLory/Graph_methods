@@ -92,6 +92,7 @@ class RBFKernelDecoder(nn.Module)
         z = F.dropout(z, self.dropout, training=self.training)
         # adj = exp(norm(z,z)^2/2*sigma^2)
         #adj = self.act(torch.mm(z, z.t()))
+        adj = self.act()
         return adj
 
 
@@ -106,6 +107,8 @@ class PolyKernelDecoder(nn.Module):
 
     def forward(self, z):
         z = F.dropout(z, self.dropout, training=self.training)
+        # need to explain c and d here
         # adj = (torch.mm(z, z.t())+c)^d
         #adj = self.act(torch.mm(z, z.t()))
+        adj = self.act((torch.mm(z, z.t()) + c)**d)
         return adj
